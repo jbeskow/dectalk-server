@@ -19,6 +19,7 @@ def say():
     fn = str(uuid.uuid1()) + '.wav'
     path = os.path.join(dectalk,fn)
     try:
+        os.environ['DISPLAY']=':0.0'
         subprocess.check_output(['wine', 'say.exe', '-w', fn, text],cwd = dectalk)
         with open(path,'rb') as f:
             response = make_response(f.read())
