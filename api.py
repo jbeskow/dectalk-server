@@ -26,7 +26,8 @@ def say():
             os.remove(path)
             return response
         
-    except subprocess.CalledProcessError as sayexc:                                                                   return('say error:', sayexc.output)
+    except subprocess.CalledProcessError as sayexc:
+        return('say error:', sayexc.output)
 
 dir = os.path.dirname(os.path.realpath(__file__))
 dectalk = os.path.join(dir,'dectalk')
