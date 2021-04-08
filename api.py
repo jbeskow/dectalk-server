@@ -21,7 +21,8 @@ def to16khz(wavfile):
                 wf2.setnchannels(p1.nchannels)
                 wf2.setframerate(16000)
                 wf2.writeframes(data2)
-                return outfile
+            return outfile
+        return wavfile
     return None
 
 @app.route('/')
@@ -37,18 +38,18 @@ def say():
     path = os.path.join(dectalk,fn)
     try:
         os.environ['DISPLAY']=':0.0'
-        subprocess.check_output(['wine', 'say.exe', '-w', fn, text],cwd = dectalk)
-        path2 = to16khz(path)
+        output = subprocess.check_output(['wine', 'say.exe', '-w', fn, text],stderr=subprocess.STDOUT,cwd = dectalk)
         
-        with open(path2,'rb') as f:
-            response = make_response(f.read())
-            response.headers.set('Content-Type', 'audio/wav')
-            os.remove(path)
-            os.remove(path2)
-            return response
-        
-    except subprocess.CalledProcessError as sayexc:
-        return('say error:', sayexc.output)
+    except subprocess.CalledProcessError as exc:
+        return make_response('say error:' + str(exc.output),418)
+  
+    path2 = to16khz(path)
+    with open(path2,'rb') as f:
+        response = make_response(f.read())
+        response.headers.set('Content-Type', 'audio/wav')
+        os.remove(path)
+        os.remove(path2)
+        return response
 
 dir = os.path.dirname(os.path.realpath(__file__))
 dectalk = os.path.join(dir,'dectalk')
