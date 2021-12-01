@@ -1,2 +1,4 @@
-wget www.speech.kth.se/tts-demos/tts-bin.zip
-unzip tts-bin.zip
+wget www.speech.kth.se/tts-demos/dectalk-bin.zip
+unzip dectalk-bin.zip
+wget www.speech.kth.se/tts-demos/mimic-bin.zip
+unzip mimic-bin.zip
